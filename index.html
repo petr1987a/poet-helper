@@ -5,20 +5,98 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Счётчик Слогов</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        textarea { width: 90%; min-height: 100px; margin-bottom: 10px; }
-        button { padding: 10px 15px; cursor: pointer; }
-        #result { margin-top: 15px; font-weight: bold; }
-    </style>
+    /* Стиль для всей страницы */
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Задаем стек шрифтов */
+        background-color: #f4f7f6; /* Светло-серый фон */
+        color: #333; /* Темно-серый цвет текста по умолчанию */
+        line-height: 1.6; /* Межстрочный интервал для читаемости */
+        margin: 0; /* Убираем отступы по умолчанию у body */
+        padding: 0; /* Убираем поля по умолчанию у body */
+    }
+
+    /* Контейнер для основного контента (добавим его в HTML позже!) */
+    .container {
+        max-width: 800px; /* Максимальная ширина контента */
+        margin: 30px auto; /* Центрируем блок по горизонтали и задаем отступ сверху/снизу */
+        padding: 20px; /* Внутренние поля */
+        background-color: #ffffff; /* Белый фон для блока контента */
+        border-radius: 8px; /* Скругленные углы */
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Легкая тень */
+    }
+
+    /* Стили для заголовка */
+    h1 {
+        color: #0056b3; /* Синий цвет для заголовка */
+        text-align: center; /* Выравнивание по центру */
+        margin-bottom: 20px; /* Отступ снизу */
+    }
+
+    /* Стили для текстового поля */
+    textarea {
+        width: 95%; /* Чуть меньше 100% из-за padding родителя */
+        min-height: 150px;
+        margin-bottom: 15px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 1rem; /* Размер шрифта как у основного текста */
+    }
+
+    /* Стили для кнопки */
+    button {
+        display: block; /* Чтобы кнопка заняла всю ширину и к ней применился margin: auto */
+        margin: 15px auto; /* Центрируем кнопку */
+        padding: 12px 25px;
+        font-size: 1rem;
+        color: #ffffff; /* Белый текст */
+        background-color: #007bff; /* Ярко-синий фон */
+        border: none; /* Убираем рамку */
+        border-radius: 5px; /* Скругленные углы */
+        cursor: pointer; /* Указатель в виде руки при наведении */
+        transition: background-color 0.3s ease; /* Плавный переход цвета фона при наведении */
+    }
+
+    /* Стиль для кнопки при наведении */
+    button:hover {
+        background-color: #0056b3; /* Более темный синий при наведении */
+    }
+
+    /* Стили для области результата */
+    #result {
+        margin-top: 20px;
+        padding: 15px;
+        background-color: #e9ecef; /* Светло-серый фон для результата */
+        border-left: 5px solid #007bff; /* Синяя полоска слева для акцента */
+        border-radius: 4px;
+        font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт для результата */
+        line-height: 1.8; /* Увеличим межстрочный интервал для вывода строк */
+    }
+    
+    footer { 
+        margin-top: 60px;
+        font-style: italic;
+        text-align: center;
+        font-size: 0.6em;
+        color: #777;
+    }
+</style>
 </head>
 
 <body>
-    <h1>Счётчик Слогов для девочек с Островка</h1>
+
+ <div class="container"> <!-- НАЧАЛО КОНТЕЙНЕРА -->
+
+    <h1>Счётчик Слогов</h1>
     <textarea id="inputText" placeholder="Ваш текст здесь..."></textarea>
     <br>
     <button id="countButton">Посчитать слоги</button>
 
     <div id="result">Здесь будет результат...</div>
+
+  <footer> Сделано с ❤️ для поэтов (и не только!) Лены и Светы! </footer> 
+
+</div> <!-- КОНЕЦ КОНТЕЙНЕРА -->
 
     <script>
        // --- Находим наши HTML-элементы ---
@@ -80,6 +158,7 @@ function processAndDisplayResults() {
 // --- Назначаем действие на кнопку ---
 countButton.addEventListener('click', processAndDisplayResults);
     </script>
+
 </body>
 
 </html>
