@@ -19,8 +19,6 @@
     <br>
     <button id="countButton">Посчитать слоги</button>
 
-    <div id="result">Здесь будет результат...</div>
-
     <script>
        // --- Находим наши HTML-элементы ---
 const textArea = document.getElementById('inputText');
@@ -54,7 +52,7 @@ function countSyllables() {
     if (text.trim().length === 0) {
          resultDiv.textContent = "Пожалуйста, введите текст.";
     } else {
-         resultDiv.textContent = "Приблизительное количество слогов: " + syllableCount;
+         resultDiv.textContent = "Количество слогов: " + syllableCount;
     }
 }
 
