@@ -1,20 +1,4 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Счётчик Слогов</title>
-    <style>
-        /* Немного стилей для красоты (не обязательно) */
-        body { font-family: sans-serif; padding: 20px; }
-        textarea { width: 90%; min-height: 100px; margin-bottom: 10px; }
-        button { padding: 10px 15px; cursor: pointer; }
-        #result { margin-top: 15px; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-    <h1>Счётчик Слогов для девочек Светы и Лены с Островка</h1>
+Островка</h3>
     <textarea id="inputText" placeholder="Ваш текст здесь..."></textarea>
     <br>
     <button id="countButton">Посчитать слоги</button>
@@ -42,12 +26,6 @@ function countSyllables() {
         }
     }
 
-    // Небольшая обработка случая, если гласных нет, но текст есть (считаем как 1 слог)
-    // Это спорное правило, но может помочь для слов типа "всхлип"
-    if (syllableCount === 0 && text.trim().length > 0) {
-        syllableCount = 1;
-    }
-
     // --- Выводим результат ---
     if (text.trim().length === 0) {
          resultDiv.textContent = "Пожалуйста, введите текст.";
@@ -60,6 +38,5 @@ function countSyllables() {
 // Когда на кнопку нажимают, вызывается функция countSyllables
 countButton.addEventListener('click', countSyllables);
     </script>
-
 </body>
 </html>
