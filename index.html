@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Счётчик Слогов</title>
+    <style>
+        /* Немного стилей для красоты (не обязательно) */
+        body { font-family: sans-serif; padding: 20px; }
+        textarea { width: 90%; min-height: 100px; margin-bottom: 10px; }
+        button { padding: 10px 15px; cursor: pointer; }
+        #result { margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <h1>Счётчик Слогов для девочек с Островка</h1>
+    <textarea id="inputText" placeholder="Ваш текст здесь..."></textarea>
+    <br>
+    <button id="countButton">Посчитать слоги</button>
+
+    <div id="result">Здесь будет результат...</div>
+
+    <script>
+       // --- Находим наши HTML-элементы ---
+const textArea = document.getElementById('inputText');
+const countButton = document.getElementById('countButton');
+const resultDiv = document.getElementById('result');
+
+// --- Определяем русские гласные ---
+const vowels = "аеёиоуыэюя";
+
+// --- Функция для подсчета слогов (гласных) ---
+function countSyllables() {
+    const text = textArea.value.toLowerCase(); // Берем текст из поля и переводим в нижний регистр
+    let syllableCount = 0; // Начинаем считать с нуля
+
+    // Перебираем каждый символ в тексте
+    for (let i = 0; i < text.length; i++) {
+        const character = text[i];
+        // Проверяем, является ли текущий символ гласной
+        if (vowels.includes(character)) {
+            syllableCount++; // Если да, увеличиваем счетчик
+        }
+    }
+
+    // Небольшая обработка случая, если гласных нет, но текст есть (считаем как 1 слог)
+    // Это спорное правило, но может помочь для слов типа "всхлип"
+    if (syllableCount === 0 && text.trim().length > 0) {
+        syllableCount = 1;
+    }
+
+    // --- Выводим результат ---
+    if (text.trim().length === 0) {
+         resultDiv.textContent = "Пожалуйста, введите текст.";
+    } else {
+         resultDiv.textContent = "Приблизительное количество слогов: " + syllableCount;
+    }
+}
+
+// --- Назначаем действие на кнопку ---
+// Когда на кнопку нажимают, вызывается функция countSyllables
+countButton.addEventListener('click', countSyllables);
+    </script>
+
+</body>
+</html>
