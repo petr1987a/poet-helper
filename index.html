@@ -5,20 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Счётчик Слогов</title>
     <style>
-        /* Немного стилей для красоты (не обязательно) */
         body { font-family: sans-serif; padding: 20px; }
         textarea { width: 90%; min-height: 100px; margin-bottom: 10px; }
         button { padding: 10px 15px; cursor: pointer; }
         #result { margin-top: 15px; font-weight: bold; }
     </style>
 </head>
-<body>
 
-    <h3>Счётчик Слогов для девочек Светы и Лены с Островка</h3>
+<body>
+    <h1>Счётчик Слогов для девочек с Островка</h1>
     <textarea id="inputText" placeholder="Ваш текст здесь..."></textarea>
     <br>
     <button id="countButton">Посчитать слоги</button>
-    <div id="result"> </div>
+
+    <div id="result">Здесь будет результат...</div>
+
     <script>
        // --- Находим наши HTML-элементы ---
 const textArea = document.getElementById('inputText');
@@ -28,31 +29,57 @@ const resultDiv = document.getElementById('result');
 // --- Определяем русские гласные ---
 const vowels = "аеёиоуыэюя";
 
-// --- Функция для подсчета слогов (гласных) ---
-function countSyllables() {
-    const text = textArea.value.toLowerCase(); // Берем текст из поля и переводим в нижний регистр
-    let syllableCount = 0; // Начинаем считать с нуля
+// --- Функция для подсчета слогов В ОДНОЙ СТРОКЕ ---
+// Мы вынесли логику подсчета для одной строки в отдельную функцию
+function countSyllablesInLine(line) {
+    const lowerLine = line.toLowerCase(); // Переводим строку в нижний регистр
+    let syllableCount = 0; // Счетчик для этой строки
 
-    // Перебираем каждый символ в тексте
-    for (let i = 0; i < text.length; i++) {
-        const character = text[i];
+    // Перебираем каждый символ в строке
+    for (let i = 0; i < lowerLine.length; i++) {
+        const character = lowerLine[i];
         // Проверяем, является ли текущий символ гласной
         if (vowels.includes(character)) {
             syllableCount++; // Если да, увеличиваем счетчик
         }
     }
+    // Обработка случая "нет гласных, но есть текст"
+    if (syllableCount === 0 && line.trim().length > 0) {
+        syllableCount = 1;
+    }
+    return syllableCount; // Возвращаем посчитанное количество
+}
+
+// --- Функция, которая вызывается при нажатии кнопки ---
+function processAndDisplayResults() {
+    const fullText = textArea.value; // Получаем ВЕСЬ текст из поля
+    const lines = fullText.split('\n'); // РАЗБИВАЕМ текст на строки
+
+    let resultsHTML = ""; // Переменная для формирования результата в виде HTML
+
+    // Перебираем каждую строку в массиве lines
+    for (let i = 0; i < lines.length; i++) {
+        const currentLine = lines[i];
+        // Считаем слоги для ТЕКУЩЕЙ строки с помощью нашей новой функции
+        const syllables = countSyllablesInLine(currentLine);
+
+        // Добавляем результат для этой строки в общую строку HTML
+        // (i + 1) - чтобы нумерация строк была с 1, а не с 0
+        // Добавляем <br> для переноса строки в HTML-выводе
+        resultsHTML += ` "${currentLine}"   ${syllables}<br>`;
+    }
 
     // --- Выводим результат ---
-    if (text.trim().length === 0) {
-         resultDiv.textContent = "Пожалуйста, введите текст.";
+    if (fullText.trim().length === 0) {
+         resultDiv.innerHTML = "Пожалуйста, введите текст."; // Используем innerHTML
     } else {
-         resultDiv.textContent = "Количество слогов: " + syllableCount;
+         resultDiv.innerHTML = resultsHTML; // Выводим наш HTML с результатами
     }
 }
 
 // --- Назначаем действие на кнопку ---
-// Когда на кнопку нажимают, вызывается функция countSyllables
-countButton.addEventListener('click', countSyllables);
+countButton.addEventListener('click', processAndDisplayResults);
     </script>
 </body>
+
 </html>
