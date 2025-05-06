@@ -1,0 +1,59 @@
+name: Deploy Syllable Counters to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main       # Или 'master'
+      - with-clear-button
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout main branch content
+        uses: actions/checkout@v4
+        with:
+          ref: main # Или 'master'
+          path: ./repo-main # Скачиваем содержимое main
+
+      - name: Checkout with-clear-button branch content
+        uses: actions/checkout@v4
+        with:
+          ref: with-clear-button
+          path: ./repo-clear # Скачиваем содержимое with-clear-button
+
+      - name: Prepare artifact structure
+        run: |
+          mkdir -p artifact/basic  # Папка для базовой версии
+          mkdir -p artifact/with-clear # Папка для версии с очисткой
+          
+          # Копируем index.html (и другие файлы, если они есть в корне веток)
+          cp ./repo-main/index.html artifact/basic/
+          # Если есть другие файлы/папки (css, js, images), копируем их тоже:
+          # cp -r ./repo-main/css artifact/basic/
+          # cp -r ./repo-main/js artifact/basic/
+          
+          cp ./repo-clear/index.html artifact/with-clear/
+          # cp -r ./repo-clear/css artifact/with-clear/
+          # cp -r ./repo-clear/js artifact/with-clear/
+          
+          # (Опционально) Если хочешь создать "главную" страницу-заглушку для корня сайта
+          # echo "<h1>Выберите версию счетчика:</h1><ul><li><a href='basic/'>Базовая</a></li><li><a href='with-clear/'>С кнопкой очистки</a></li></ul>" > artifact/index.html
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./artifact # Загружаем всю папку artifact, в которой уже есть basic/ и with-clear/
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
