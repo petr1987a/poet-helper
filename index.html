@@ -99,6 +99,7 @@
 </div> <!-- КОНЕЦ КОНТЕЙНЕРА -->
 
     <script>
+          
        // --- Находим наши HTML-элементы ---
 const textArea = document.getElementById('inputText');
 const countButton = document.getElementById('countButton');
@@ -108,56 +109,58 @@ const resultDiv = document.getElementById('result');
 const vowels = "аеёиоуыэюя";
 
 // --- Функция для подсчета слогов В ОДНОЙ СТРОКЕ ---
-// Мы вынесли логику подсчета для одной строки в отдельную функцию
+// (Остается без изменений, она молодец!)
 function countSyllablesInLine(line) {
-    const lowerLine = line.toLowerCase(); // Переводим строку в нижний регистр
-    let syllableCount = 0; // Счетчик для этой строки
-
-    // Перебираем каждый символ в строке
+    const lowerLine = line.toLowerCase();
+    let syllableCount = 0;
     for (let i = 0; i < lowerLine.length; i++) {
         const character = lowerLine[i];
-        // Проверяем, является ли текущий символ гласной
         if (vowels.includes(character)) {
-            syllableCount++; // Если да, увеличиваем счетчик
+            syllableCount++;
         }
     }
-    // Обработка случая "нет гласных, но есть текст"
     if (syllableCount === 0 && line.trim().length > 0) {
         syllableCount = 1;
     }
-    return syllableCount; // Возвращаем посчитанное количество
+    return syllableCount;
 }
 
 // --- Функция, которая вызывается при нажатии кнопки ---
+// ✨ Вот здесь мы и внесли правки ✨
 function processAndDisplayResults() {
-    const fullText = textArea.value; // Получаем ВЕСЬ текст из поля
-    const lines = fullText.split('\n'); // РАЗБИВАЕМ текст на строки
+    const fullText = textArea.value;
+    const lines = fullText.split('\n');
 
-    let resultsHTML = ""; // Переменная для формирования результата в виде HTML
+    let resultsHTML = ""; // Собираем результат здесь
 
-    // Перебираем каждую строку в массиве lines
+    // Перебираем каждую строку
     for (let i = 0; i < lines.length; i++) {
         const currentLine = lines[i];
-        // Считаем слоги для ТЕКУЩЕЙ строки с помощью нашей новой функции
-        const syllables = countSyllablesInLine(currentLine);
 
-        // Добавляем результат для этой строки в общую строку HTML
-        // (i + 1) - чтобы нумерация строк была с 1, а не с 0
-        // Добавляем <br> для переноса строки в HTML-выводе
-        resultsHTML += ` "${currentLine}"   ${syllables}<br>`;
+        // Проверяем, содержит ли строка что-то кроме пробелов
+        if (currentLine.trim().length > 0) {
+            // Если строка НЕ пустая: считаем слоги и выводим ее с числом слогов (БЕЗ кавычек)
+            const syllables = countSyllablesInLine(currentLine);
+            resultsHTML += ` ${currentLine}   ${syllables}<br>`; // Убрали кавычки
+        } else {
+            // Если строка пустая (или состоит только из пробелов):
+            // выводим просто перенос строки, БЕЗ числа слогов
+            resultsHTML += `<br>`;
+        }
     }
 
     // --- Выводим результат ---
     if (fullText.trim().length === 0) {
-         resultDiv.innerHTML = "Пожалуйста, введите текст."; // Используем innerHTML
+         resultDiv.innerHTML = "Пожалуйста, введите текст.";
     } else {
-         resultDiv.innerHTML = resultsHTML; // Выводим наш HTML с результатами
+         resultDiv.innerHTML = resultsHTML;
     }
 }
 
 // --- Назначаем действие на кнопку ---
 countButton.addEventListener('click', processAndDisplayResults);
-    </script>
+</script>
+   
 
 </body>
 
