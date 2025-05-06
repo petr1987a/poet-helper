@@ -7,161 +7,214 @@
     <style>
     /* Стиль для всей страницы */
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Задаем стек шрифтов */
-        background-color: #f4f7f6; /* Светло-серый фон */
-        color: #333; /* Темно-серый цвет текста по умолчанию */
-        line-height: 1.6; /* Межстрочный интервал для читаемости */
-        margin: 0; /* Убираем отступы по умолчанию у body */
-        padding: 0; /* Убираем поля по умолчанию у body */
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f7f6;
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
     }
 
-    /* Контейнер для основного контента (добавим его в HTML позже!) */
+    /* Контейнер */
     .container {
-        max-width: 800px; /* Максимальная ширина контента */
-        margin: 30px auto; /* Центрируем блок по горизонтали и задаем отступ сверху/снизу */
-        padding: 20px; /* Внутренние поля */
-        background-color: #ffffff; /* Белый фон для блока контента */
-        border-radius: 8px; /* Скругленные углы */
-        box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* Легкая тень */
+        max-width: 800px;
+        margin: 30px auto;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    /* Стили для заголовка */
+    /* Заголовок */
     h1 {
-        color: #0056b3; /* Синий цвет для заголовка */
-        text-align: center; /* Выравнивание по центру */
-        margin-bottom: 20px; /* Отступ снизу */
+        color: #0056b3;
+        text-align: center;
+        margin-bottom: 20px;
     }
 
-    /* Стили для текстового поля */
+    /* Текстовое поле */
     textarea {
-        width: 95%; /* Чуть меньше 100% из-за padding родителя */
+        width: 95%; /* Учитываем padding родителя */
         min-height: 150px;
         margin-bottom: 15px;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 1rem; /* Размер шрифта как у основного текста */
+        font-size: 1rem;
     }
 
-    /* Стили для кнопки */
+    /* Кнопки */
     button {
-        display: block; /* Чтобы кнопка заняла всю ширину и к ней применился margin: auto */
-        margin: 15px auto; /* Центрируем кнопку */
         padding: 12px 35px;
         font-size: 1rem;
-        color: #ffffff; /* Белый текст */
-        background-color: #007bff; /* Ярко-синий фон */
-        border: none; /* Убираем рамку */
-        border-radius: 5px; /* Скругленные углы */
-        cursor: pointer; /* Указатель в виде руки при наведении */
-        transition: background-color 0.3s ease; /* Плавный переход цвета фона при наведении */
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        /* display: block; Убираем, так как центрируем через родителя */
+        /* margin: 15px auto; Убираем, так как центрируем через родителя */
     }
 
-    /* Стиль для кнопки при наведении */
-    button:hover {
-        background-color: #0056b3; /* Более темный синий при наведении */
+    /* Контейнер для кнопок (чтобы они были в ряд и по центру) */
+    .button-container {
+        text-align: center; /* Центрируем кнопки внутри div */
+        margin-top: 15px; /* Отступ сверху для блока кнопок */
     }
 
-    /* Стили для области результата */
+    /* Стиль для кнопки START */
+    #countButton {
+        background-color: #007bff;
+    }
+    #countButton:hover {
+        background-color: #0056b3;
+    }
+
+    /* ⭐ СТИЛЬ ДЛЯ КНОПКИ ОЧИСТИТЬ ⭐ */
+    #clearButton {
+        background-color: #6c757d; /* Серый фон */
+        margin-left: 10px;         /* Отступ слева от первой кнопки */
+    }
+    #clearButton:hover {
+        background-color: #5a6268; /* Темно-серый при наведении */
+    }
+
+    /* Область результата */
     #result {
         margin-top: 20px;
         padding: 15px;
-        background-color: #e9ecef; /* Светло-серый фон для результата */
-        border-left: 5px solid #007bff; /* Синяя полоска слева для акцента */
+        background-color: #e9ecef;
+        border-left: 5px solid #007bff;
         border-radius: 4px;
-        font-family: 'Courier New', Courier, monospace; /* Моноширинный шрифт для результата */
-        line-height: 1.8; /* Увеличим межстрочный интервал для вывода строк */
+        font-family: 'Courier New', Courier, monospace;
+        line-height: 1.8;
     }
-    
-    footer { 
+
+    /* Подвал */
+    footer {
         margin-top: 60px;
         font-style: italic;
         text-align: center;
         font-size: 0.6em;
         color: #777;
     }
-</style>
+    </style>
 </head>
 
 <body>
 
- <div class="container"> <!-- НАЧАЛО КОНТЕЙНЕРА -->
+ <div class="container">
 
     <h1>Счётчик Слогов</h1>
     <textarea id="inputText" placeholder="Ваш текст здесь..."></textarea>
     <br>
-    <button id="countButton">START</button>
+
+    <!-- ОБНОВЛЕННЫЙ БЛОК С КНОПКАМИ -->
+    <div class="button-container"> <!-- Используем контейнер для центрирования -->
+        <button id="countButton">START</button>
+        <button id="clearButton">ОЧИСТИТЬ</button> <!-- Стиль убран отсюда -->
+    </div>
+    <!-- КОНЕЦ БЛОКА С КНОПКАМИ -->
 
     <div id="result">Здесь будет результат...</div>
 
-  <footer> Сделано с ❤️ для поэтов (и не только!) Лены и Светы! </footer> 
+    <footer> Сделано с ❤️ для поэтов (и не только!) Лены и Светы! </footer>
 
-</div> <!-- КОНЕЦ КОНТЕЙНЕРА -->
+ </div> <!-- КОНЕЦ .container -->
 
     <script>
-          
-       // --- Находим наши HTML-элементы ---
-const textArea = document.getElementById('inputText');
-const countButton = document.getElementById('countButton');
-const resultDiv = document.getElementById('result');
+        // --- Находим ВСЕ наши HTML-элементы ---
+        const textArea = document.getElementById('inputText');
+        const countButton = document.getElementById('countButton');
+        const resultDiv = document.getElementById('result');
+        const clearButton = document.getElementById('clearButton'); // Нашли новую кнопку
+        const vowels = "аеёиоуыэюя";
+        const initialResultText = resultDiv.innerHTML; // Сохраняем исходный текст из HTML
 
-// --- Определяем русские гласные ---
-const vowels = "аеёиоуыэюя";
+        console.log("--- Скрипт запущен, элементы найдены ---");
+        console.log("Поле ввода:", textArea);
+        console.log("Кнопка START:", countButton);
+        console.log("Поле результата:", resultDiv);
+        console.log("Кнопка ОЧИСТИТЬ:", clearButton);
+        console.log("Исходный текст результата:", initialResultText);
 
-// --- Функция для подсчета слогов В ОДНОЙ СТРОКЕ ---
-// (Остается без изменений, она молодец!)
-function countSyllablesInLine(line) {
-    const lowerLine = line.toLowerCase();
-    let syllableCount = 0;
-    for (let i = 0; i < lowerLine.length; i++) {
-        const character = lowerLine[i];
-        if (vowels.includes(character)) {
-            syllableCount++;
+
+        // --- Функция для подсчета слогов В ОДНОЙ СТРОКЕ ---
+        function countSyllablesInLine(line) {
+            const lowerLine = line.toLowerCase();
+            let syllableCount = 0;
+            for (let i = 0; i < lowerLine.length; i++) {
+                const character = lowerLine[i];
+                if (vowels.includes(character)) {
+                    syllableCount++;
+                }
+            }
+            if (syllableCount === 0 && line.trim().length > 0) {
+                syllableCount = 1;
+            }
+            return syllableCount;
         }
-    }
-    if (syllableCount === 0 && line.trim().length > 0) {
-        syllableCount = 1;
-    }
-    return syllableCount;
-}
 
-// --- Функция, которая вызывается при нажатии кнопки ---
-// ✨ Вот здесь мы и внесли правки ✨
-function processAndDisplayResults() {
-    const fullText = textArea.value;
-    const lines = fullText.split('\n');
+        // --- Функция обработки и вывода результата ---
+        function processAndDisplayResults() {
+            console.log("--- Кнопка START нажата ---");
+            const fullText = textArea.value;
 
-    let resultsHTML = ""; // Собираем результат здесь
+            if (fullText.length === 0) {
+                resultDiv.innerHTML = "Поле ввода девственно чисто. Жду твоего текста! 😉";
+                console.log("Вывод: Поле пустое.");
+                return;
+            }
 
-    // Перебираем каждую строку
-    for (let i = 0; i < lines.length; i++) {
-        const currentLine = lines[i];
+            const lines = fullText.split('\n');
+            let resultsHTML = "";
+            let hasRealContent = false;
 
-        // Проверяем, содержит ли строка что-то кроме пробелов
-        if (currentLine.trim().length > 0) {
-            // Если строка НЕ пустая: считаем слоги и выводим ее с числом слогов (БЕЗ кавычек)
-            const syllables = countSyllablesInLine(currentLine);
-            resultsHTML += ` ${currentLine}   ${syllables}<br>`; // Убрали кавычки
+            for (let i = 0; i < lines.length; i++) {
+                const currentLine = lines[i];
+                if (currentLine.trim().length > 0) {
+                    const syllables = countSyllablesInLine(currentLine);
+                    resultsHTML += `${currentLine}   ${syllables}<br>`;
+                    hasRealContent = true;
+                } else {
+                    resultsHTML += `<br>`;
+                }
+            }
+            console.log("Сгенерированный HTML:", resultsHTML);
+
+            if (!hasRealContent) {
+                resultDiv.innerHTML = "Вижу только пробелы и переносы... 🤔 Добавь, пожалуйста, слова.";
+                console.log("Вывод: Только пробелы.");
+            } else {
+                resultDiv.innerHTML = resultsHTML;
+                console.log("Вывод: Результат отображен.");
+            }
+        }
+
+        // --- Функция очистки полей ---
+        function clearFields() {
+            console.log("--- Кнопка ОЧИСТИТЬ нажата ---");
+            textArea.value = ""; // Очищаем поле ввода
+            resultDiv.innerHTML = initialResultText; // Возвращаем исходный текст
+            console.log("Поля очищены.");
+        }
+
+        // --- Назначаем действия на кнопки ---
+        if (countButton) {
+            countButton.addEventListener('click', processAndDisplayResults);
+            console.log("Слушатель добавлен к кнопке START.");
         } else {
-            // Если строка пустая (или состоит только из пробелов):
-            // выводим просто перенос строки, БЕЗ числа слогов
-            resultsHTML += `<br>`;
+            console.error("ОШИБКА: Не найдена кнопка START!");
         }
-    }
 
-    // --- Выводим результат ---
-    if (fullText.trim().length === 0) {
-         resultDiv.innerHTML = "Пожалуйста, введите текст.";
-    } else {
-         resultDiv.innerHTML = resultsHTML;
-    }
-}
+        if (clearButton) {
+            clearButton.addEventListener('click', clearFields); // Назначаем нашу функцию очистки
+            console.log("Слушатель добавлен к кнопке ОЧИСТИТЬ.");
+        } else {
+            console.error("ОШИБКА: Не найдена кнопка ОЧИСТИТЬ!");
+        }
 
-// --- Назначаем действие на кнопку ---
-countButton.addEventListener('click', processAndDisplayResults);
-</script>
-   
+    </script>
 
 </body>
-
 </html>
