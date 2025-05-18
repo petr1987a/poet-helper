@@ -1,0 +1,77 @@
+/* --- Общие стили --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.container {
+    max-width: 900px;
+    margin: 20px auto;
+    padding: 25px;
+    background-color: var(--container-bg);
+    border-radius: var(--container-radius);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+textarea {
+    width: 95%;
+    min-height: 150px;
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 2px solid var(--textarea-border);
+    background-color: var(--textarea-bg);
+    color: var(--textarea-color);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.light {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 0 5px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+footer {
+    margin-top: 70px;
+    font-style: italic;
+    text-align: center;
+    font-size: 0.7em;
+    color: #777;
+}
+
+/* --- Стиль тёмной темы --- */
+.dark-theme {
+    --container-bg: #2c2c2c;
+    --container-radius: 0px;
+    --textarea-border: #555;
+    --textarea-bg: #111;
+    --textarea-color: #00ff00;
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+}
+
+.dark-theme .red-light { background-color: #ff0000; }
+.dark-theme .yellow-light { background-color: #ffff00; }
+.dark-theme .green-light { background-color: #00ff00; }
+
+/* --- Стиль светлой темы --- */
+.light-theme {
+    --container-bg: #ffffff;
+    --container-radius: 8px;
+    --textarea-border: #ccc;
+    --textarea-bg: #f9f9f9;
+    --textarea-color: #333;
+    background-color: #f4f7f6;
+    color: #333;
+}
+
+.light-theme .red-light { background-color: #FF6347; }
+.light-theme .yellow-light { background-color: #FFD700; }
+.light-theme .green-light { background-color: #32CD32; }
