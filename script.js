@@ -1,109 +1,78 @@
-// script.js — Обновлённый для нового движка
+// --- Основные элементы ---
+const textArea = document.getElementById('inputText');
+const countButton = document.getElementById('countButton');
+const resultDiv = document.getElementById('result');
+const clearButton = document.getElementById('clearButton');
+const saveButton = document.getElementById('saveButton');
+const savedPoemsList = document.getElementById('savedPoemsList');
 
-const ChessEngine = require('./chess_ai'); // Импорт нового шахматного движка
+const vowels = "аеёиоуыэюя";
+const initialResultText = "Здесь будет результат...";
 
-const PIECES = {
-    'wK': '♔','wQ': '♕','wR': '♖','wB': '♗','wN': '♘','wP': '♙',
-    'bK': '♚','bQ': '♛','bR': '♜','bB': '♝','bN': '♞','bP': '♟'
-};
-
-const initialBoardSetup = [
-    ['bR','bN','bB','bQ','bK','bB','bN','bR'],
-    ['bP','bP','bP','bP','bP','bP','bP','bP'],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['','','','','','','',''],
-    ['wP','wP','wP','wP','wP','wP','wP','wP'],
-    ['wR','wN','wB','wQ','wK','wB','wN','wR']
-];
-
-let currentBoardState = [];
-let selectedSquare = null;
-let currentPlayer = 'w';
-let boardSize = 8;
-let gameStatus = "ongoing";
-
-const boardElement = document.getElementById('chessBoard');
-const messageElement = document.getElementById('message');
-const currentPlayerElement = document.getElementById('currentPlayer');
-const resetButton = document.getElementById('resetButton');
-
-const chessEngine = new ChessEngine(); // Создаём экземпляр нового шахматного движка
-
-function initializeBoard() {
-    currentBoardState = JSON.parse(JSON.stringify(initialBoardSetup));
-    selectedSquare = null;
-    currentPlayer = 'w';
-    gameStatus = "ongoing";
-    renderBoard();
-    updateInfoPanel("Игра началась. Ход Белых.");
-}
-
-function renderBoard() {
-    boardElement.innerHTML = '';
-    for (let row = 0; row < boardSize; row++) {
-        for (let col = 0; col < boardSize; col++) {
-            const square = document.createElement('div');
-            square.classList.add('square');
-            square.classList.add((row + col) % 2 === 0 ? 'light' : 'dark');
-            square.dataset.row = row;
-            square.dataset.col = col;
-            const pieceCode = currentBoardState[row][col];
-            if (pieceCode) {
-                square.textContent = PIECES[pieceCode];
-                square.classList.add('piece');
-                square.classList.add(pieceCode.startsWith('w') ? 'white' : 'black');
-            }
-            square.addEventListener('click', () => onSquareClick(row, col));
-            boardElement.appendChild(square);
-        }
+// Подсчёт слогов в строках
+function countSyllablesInLine(line) {
+    const lowerLine = line.toLowerCase();
+    let syllableCount = 0;
+    for (let i = 0; i < lowerLine.length; i++) {
+        if (vowels.includes(lowerLine[i])) syllableCount++;
     }
-    updateInfoPanel(`Ход ${currentPlayer === 'w' ? 'Белых' : 'Черных'}.`);
+    return syllableCount;
 }
 
-function onSquareClick(row, col) {
-    if (gameStatus !== "ongoing") {
-        updateInfoPanel("Игра завершена. Начните новую игру, нажав 'Начать заново'.");
+// Обработка текста
+function processAndDisplayResults() {
+    const fullText = textArea.value;
+    if (fullText.length === 0) {
+        resultDiv.innerHTML = "Поле ввода девственно чисто...";
         return;
     }
-    const pieceCode = currentBoardState[row][col];
-    if (selectedSquare) {
-        // Делаем ход
-        const move = { from: selectedSquare, to: { row, col } };
-        chessEngine.makeMove(selectedSquare, { rank: row, file: col });
-        selectedSquare = null;
-        renderBoard();
-        switchPlayer();
-    } else if (pieceCode && pieceCode.startsWith(currentPlayer)) {
-        selectedSquare = { rank: row, file: col };
-        updateInfoPanel("Выбрана фигура. Куда походить?");
+
+    const lines = fullText.split('\n');
+    let resultsHTML = "";
+
+    for (let line of lines) {
+        const syllables = countSyllablesInLine(line);
+        resultsHTML += `${line} (${syllables} слогов)<br>`;
     }
+
+    resultDiv.innerHTML = resultsHTML;
 }
 
-function makeBotMove() {
-    const botColor = 'b';
-    if (currentPlayer !== botColor || gameStatus !== "ongoing") return;
+// Очистка полей
+function clearFields() {
+    textArea.value = "";
+    resultDiv.innerHTML = initialResultText;
+}
 
-    const move = chessEngine.generateMove(); // Новый способ генерации хода
-    if (move) {
-        chessEngine.makeMove(move.from, move.to);
-        renderBoard();
-        switchPlayer();
-    } else {
-        updateInfoPanel("Бот не смог сделать ход.");
+// Сохранение стихов
+function savePoem() {
+    const poem = textArea.value.trim();
+    if (!poem) {
+        alert("Нечего сохранять — поле пустое!");
+        return;
     }
+    const poems = JSON.parse(localStorage.getItem("savedPoems")) || [];
+    poems.unshift(poem);
+    localStorage.setItem("savedPoems", JSON.stringify(poems));
+    loadSavedPoems();
+    alert("Стихотворение сохранено!");
 }
 
-function switchPlayer() {
-    currentPlayer = currentPlayer === 'w' ? 'b' : 'w';
-    updateInfoPanel(`Ход ${currentPlayer === 'w' ? 'Белых' : 'Черных'}.`);
-    if (currentPlayer === 'b') makeBotMove();
+// Загрузка сохранённых стихов
+function loadSavedPoems() {
+    const poems = JSON.parse(localStorage.getItem("savedPoems")) || [];
+    savedPoemsList.innerHTML = "";
+    poems.forEach((poem, index) => {
+        const li = document.createElement("li");
+        li.textContent = poem.substring(0, 30) + (poem.length > 30 ? "..." : "");
+        savedPoemsList.appendChild(li);
+    });
 }
 
-function updateInfoPanel(message) {
-    messageElement.textContent = message;
-}
+// Привязка событий
+if (countButton) countButton.addEventListener('click', processAndDisplayResults);
+if (clearButton) clearButton.addEventListener('click', clearFields);
+if (saveButton) saveButton.addEventListener('click', savePoem);
 
-resetButton.addEventListener('click', initializeBoard);
-document.addEventListener('DOMContentLoaded', initializeBoard);
+// Инициализация
+loadSavedPoems();
