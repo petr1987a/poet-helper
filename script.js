@@ -161,6 +161,39 @@ if (searchButtonsContainer) {
     });
 }
 
+// --- Обработчик кликов по светофору для переключения тем ---
+const trafficLightContainer = document.getElementById('trafficLightContainer');
+
+trafficLightContainer.addEventListener('click', () => {
+    // Переключаем тему
+    const body = document.body;
+    if (body.classList.contains('dark-theme')) {
+        body.classList.remove('dark-theme');
+        body.classList.add('light-theme');
+    } else {
+        body.classList.remove('light-theme');
+        body.classList.add('dark-theme');
+    }
+
+    // Визуальная обратная связь: Мигаем светофором
+    flashLights();
+});
+
+// --- Функция мигания светофора ---
+function flashLights() {
+    // Включаем все огоньки
+    lightRed.classList.add('active');
+    lightYellow.classList.add('active');
+    lightGreen.classList.add('active');
+
+    // Через 500 мс выключаем их
+    setTimeout(() => {
+        lightRed.classList.remove('active');
+        lightYellow.classList.remove('active');
+        lightGreen.classList.remove('active');
+    }, 500); // 500 мс
+}
+
 // --- Вспомогательные функции ---
 function resetTrafficLightsAndComment() {
     lightRed.classList.remove('active');
