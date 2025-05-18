@@ -1,4 +1,4 @@
-/* --- Общие стили --- */
+/* --- Основные стили --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -7,6 +7,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -15,7 +16,8 @@ body {
     padding: 25px;
     background-color: var(--container-bg);
     border-radius: var(--container-radius);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 textarea {
@@ -28,6 +30,24 @@ textarea {
     color: var(--textarea-color);
     border-radius: 5px;
     font-size: 1rem;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+button {
+    padding: 10px 15px;
+    font-size: 0.9rem;
+    color: var(--button-text-color);
+    background-color: var(--button-bg);
+    border: 1px solid var(--button-border);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+}
+
+button:hover {
+    background-color: var(--button-hover-bg);
+    color: var(--button-hover-text-color);
+    border-color: var(--button-hover-border);
 }
 
 .light {
@@ -43,16 +63,26 @@ footer {
     font-style: italic;
     text-align: center;
     font-size: 0.7em;
-    color: #777;
+    color: var(--footer-color);
+    transition: color 0.3s;
 }
 
-/* --- Стиль тёмной темы --- */
+/* --- Темы --- */
+
+/* Тёмная тема */
 .dark-theme {
     --container-bg: #2c2c2c;
     --container-radius: 0px;
     --textarea-border: #555;
     --textarea-bg: #111;
     --textarea-color: #00ff00;
+    --button-text-color: #e0e0e0;
+    --button-bg: #555;
+    --button-border: #888;
+    --button-hover-bg: #ff4136;
+    --button-hover-text-color: #111;
+    --button-hover-border: #ff0000;
+    --footer-color: #777;
     background-color: #1a1a1a;
     color: #e0e0e0;
 }
@@ -61,13 +91,20 @@ footer {
 .dark-theme .yellow-light { background-color: #ffff00; }
 .dark-theme .green-light { background-color: #00ff00; }
 
-/* --- Стиль светлой темы --- */
+/* Светлая тема */
 .light-theme {
     --container-bg: #ffffff;
     --container-radius: 8px;
     --textarea-border: #ccc;
     --textarea-bg: #f9f9f9;
     --textarea-color: #333;
+    --button-text-color: #ffffff;
+    --button-bg: #007bff;
+    --button-border: #0056b3;
+    --button-hover-bg: #0056b3;
+    --button-hover-text-color: #ffffff;
+    --button-hover-border: #002f6c;
+    --footer-color: #555;
     background-color: #f4f7f6;
     color: #333;
 }
@@ -75,3 +112,40 @@ footer {
 .light-theme .red-light { background-color: #FF6347; }
 .light-theme .yellow-light { background-color: #FFD700; }
 .light-theme .green-light { background-color: #32CD32; }
+
+/* --- Адаптивность --- */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    textarea {
+        min-height: 120px;
+        font-size: 0.9rem;
+    }
+
+    button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    footer {
+        font-size: 0.6em;
+    }
+}
+
+@media (max-width: 480px) {
+    textarea {
+        min-height: 100px;
+    }
+
+    button {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+
+    .light {
+        width: 25px;
+        height: 25px;
+    }
+}
