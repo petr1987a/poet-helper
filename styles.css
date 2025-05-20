@@ -254,3 +254,12 @@ footer {
 .light-theme #searchWordInput::placeholder {
     color: #999;
 }
+
+
+/* Центрирование заголовка */
+#mainPageTitle {
+    text-align: center;
+    width: 100%;
+    margin: 20px 0;
+    padding: 0 15px;
+}
