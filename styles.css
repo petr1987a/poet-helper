@@ -42,6 +42,7 @@ button {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+	
 }
 
 button:hover {
@@ -49,6 +50,45 @@ button:hover {
     color: var(--button-hover-text-color);
     border-color: var(--button-hover-border);
 }
+
+/* Исправление для контейнера кнопок */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 15px; 
+    flex-wrap: wrap; /* Для мобильных устройств */
+    width: 100%;
+    margin: 15px 0;
+}
+
+/* Для иконок в кнопках */
+button#clearButton::after,
+button#saveButton::after {
+    content: " ";
+    white-space: pre;
+}
+
+
+/* Центрирование комментариев светофора */
+#trafficLightComment {
+    text-align: center;
+    margin: 12px auto;
+    padding: 0 15px;
+    max-width: 80%;
+    font-style: italic;
+    color: var(--footer-color);
+    transition: color 0.3s;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 480px) {
+    #trafficLightComment {
+        max-width: 95%;
+        font-size: 0.9em;
+    }
+}
+
+
 
 .light {
     width: 30px;
@@ -61,12 +101,15 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 10px;
     background-color: var(--container-bg);
     border: 1px solid var(--textarea-border);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(100, 100, 100, 0.2);
+	width: fit-content;
+	margin-left: auto;  /* Центрирование */
+    margin-right: auto;
 }
 
 .traffic-light-display .light {
@@ -104,7 +147,8 @@ footer {
     transition: color 0.3s;
 }
 
-/* --- Темы --- */
+
+
 
 /* Тёмная тема */
 .dark-theme {
@@ -114,11 +158,11 @@ footer {
     --textarea-bg: #111;
     --textarea-color: #00ff00;
     --button-text-color: #e0e0e0;
-    --button-bg: #555;
-    --button-border: #888;
-    --button-hover-bg: #ff4136;
+    --button-bg: #dc3545;
+    --button-border: #a71d2a;
+    --button-hover-bg: #bb2d3b;
     --button-hover-text-color: #111;
-    --button-hover-border: #ff0000;
+    --button-hover-border: #8a1a24;
     --footer-color: #777;
     background-color: #1a1a1a;
     color: #e0e0e0;
@@ -128,6 +172,8 @@ footer {
 .dark-theme .yellow-light { background-color: #ffff00; }
 .dark-theme .green-light { background-color: #00ff00; }
 
+
+
 /* Светлая тема */
 .light-theme {
     --container-bg: #ffffff;
@@ -136,11 +182,11 @@ footer {
     --textarea-bg: #f9f9f9;
     --textarea-color: #333;
     --button-text-color: #ffffff;
-    --button-bg: #007bff;
-    --button-border: #0056b3;
-    --button-hover-bg: #0056b3;
+    --button-bg: #28a745; 
+    --button-border: #1e7e34;
+    --button-hover-bg: #218838;
+    --button-hover-border: #145523;
     --button-hover-text-color: #ffffff;
-    --button-hover-border: #002f6c;
     --footer-color: #555;
     background-color: #f4f7f6;
     color: #333;
@@ -149,6 +195,8 @@ footer {
 .light-theme .red-light { background-color: #FF6347; }
 .light-theme .yellow-light { background-color: #FFD700; }
 .light-theme .green-light { background-color: #32CD32; }
+
+
 
 /* --- Адаптивность --- */
 @media (max-width: 768px) {
@@ -185,4 +233,24 @@ footer {
         width: 25px;
         height: 25px;
     }
+}
+
+
+
+/* ================ styles.css ================ */
+/* Добавляем анимацию для плейсхолдеров */
+#inputText::placeholder,
+#searchWordInput::placeholder {
+    transition: opacity 0.4s ease-in-out;
+    color: var(--textarea-color);
+}
+
+.dark-theme #inputText::placeholder,
+.dark-theme #searchWordInput::placeholder {
+    color: #666;
+}
+
+.light-theme #inputText::placeholder,
+.light-theme #searchWordInput::placeholder {
+    color: #999;
 }
