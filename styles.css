@@ -90,6 +90,10 @@ button#saveButton::after {
 
 
 
+
+
+
+
 .light {
     width: 30px;
     height: 30px;
@@ -110,33 +114,128 @@ button#saveButton::after {
 	width: fit-content;
 	margin-left: auto;  /* Центрирование */
     margin-right: auto;
+	cursor: pointer;
 }
 
 .traffic-light-display .light {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     border-radius: 50%;
-    background-color: #333;
-    margin: 0 8px;
-    border: 3px solid #555;
-    box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    margin: 0 12px;
+    position: relative;
+    background: radial-gradient(circle at 30% 30%, 
+        rgba(255,255,255,0.4) 0%, 
+        rgba(255,255,255,0.1) 50%,
+        transparent 100%);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: none;
+    box-shadow: 
+        0 0 15px rgba(0,0,0,0.2),
+        inset 0 -5px 15px rgba(0,0,0,0.3);
 }
 
-.traffic-light-display .red-light.active {
-    background-color: #ff0000;
-    box-shadow: 0 0 20px #ff0000;
+/* Эффект стеклянной поверхности */
+.light::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    border-radius: 50%;
+    background: linear-gradient(145deg, 
+        rgba(255,255,255,0.3) 0%, 
+        rgba(255,255,255,0.1) 50%,
+        rgba(0,0,0,0.1) 100%);
 }
 
-.traffic-light-display .yellow-light.active {
-    background-color: #ffff00;
-    box-shadow: 0 0 20px #ffff00;
+/* Анимация свечения */
+@keyframes glow {
+    0% { filter: brightness(1); }
+    50% { filter: brightness(1.2); }
+    100% { filter: brightness(1); }
 }
 
-.traffic-light-display .green-light.active {
-    background-color: #00ff00;
-    box-shadow: 0 0 20px #00ff00;
+/* Цвета для активных состояний с градиентами */
+.red-light.active {
+    background: radial-gradient(circle, 
+        #ff4444 0%, 
+        #cc0000 70%, 
+        #8b0000 100%);
+    box-shadow: 0 0 30px #ff000066;
+    animation: glow 1.5s infinite;
 }
+
+.yellow-light.active {
+    background: radial-gradient(circle, 
+        #ffff00 0%, 
+        #ffd700 70%, 
+        #daa520 100%);
+    box-shadow: 0 0 30px #ffff0066;
+    animation: glow 1.8s infinite;
+}
+
+.green-light.active {
+    background: radial-gradient(circle, 
+        #00ff00 0%, 
+        #00cc00 70%, 
+        #008000 100%);
+    box-shadow: 0 0 30px #00ff0066;
+    animation: glow 2s infinite;
+}
+
+/* Эффект при наведении */
+.light:hover:not(.active) {
+    transform: scale(1.05);
+    cursor: pointer;
+}
+
+/* Неактивные состояния с эффектом "выключено" */
+.dark-theme .light:not(.active) {
+    background: radial-gradient(circle, 
+        #3a3a3a 0%, 
+        #2a2a2a 70%, 
+        #1a1a1a 100%);
+}
+
+.light-theme .light:not(.active) {
+    background: radial-gradient(circle, 
+        #e0e0e0 0%, 
+        #c0c0c0 70%, 
+        #a0a0a0 100%);
+}
+/* Анимация включения */
+@keyframes power-on {
+    0% { transform: scale(0); opacity: 0; }
+    80% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.light.active {
+    animation: power-on 0.3s ease-out;
+}
+
+/* Эффект частиц при активации */
+.light.active::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, 
+        rgba(255,255,255,0.4) 0%, 
+        transparent 70%);
+    animation: sparkle 0.8s linear;
+}
+
+@keyframes sparkle {
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(2); opacity: 0; }
+}
+
+
+
+
+
 
 footer {
     margin-top: 70px;
@@ -256,10 +355,83 @@ footer {
 }
 
 
+
 /* Центрирование заголовка */
 #mainPageTitle {
     text-align: center;
     width: 100%;
     margin: 20px 0;
     padding: 0 15px;
+}
+
+
+
+/* Тёмная тема — красная рамка */
+.dark-theme {
+    --textarea-border: #ff5555; /* Красный цвет */
+}
+
+/* Светлая тема — зелёная рамка */
+.light-theme {
+    --textarea-border: #00cc66; /* Зелёный цвет */
+}
+
+
+/* Стили для элементов списка */
+#savedPoemsList li {
+    display: flex;
+    align-items: center; /* Вертикальное выравнивание */
+    justify-content: space-between; /* Распределение пространства */
+    gap: 10px; /* Расстояние между элементами */
+    padding: 8px 12px;
+    margin: 6px 0;
+    background-color: var(--container-bg);
+    border: 1px solid var(--textarea-border);
+    border-radius: 5px;
+}
+
+/* Стиль для текста стихотворения */
+#savedPoemsList li span {
+    flex: 1; /* Занимает всё доступное пространство */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Стили для кнопок */
+#savedPoemsList li button {
+    padding: 6px 12px;
+    flex-shrink: 0; /* Запрет сжатия кнопок */
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Для мобильных устройств */
+@media (max-width: 480px) {
+    #savedPoemsList li {
+        flex-wrap: wrap; /* Перенос на новую строку */
+    }
+    
+    #savedPoemsList li button {
+        width: 100%; /* Полная ширина на мобилках */
+        justify-content: center;
+    }
+}
+
+
+/* Стили для цифр слогов */
+.syllable-count {
+    color: var(--accent-color);
+    font-weight: 900;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+}
+
+/* Для темной темы */
+.dark-theme .syllable-count {
+    --accent-color: #ff4444; /* Ярко-красный */
+}
+
+/* Для светлой темы */
+.light-theme .syllable-count {
+    --accent-color: #00ff00; /* Зелёный */
 }
